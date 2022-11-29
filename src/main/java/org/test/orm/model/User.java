@@ -19,6 +19,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Role role;
+
 
     public Long getId() {
         return id;
@@ -59,6 +62,15 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.test.orm.config.DatabaseConfiguration;
+import org.test.orm.model.Role;
 import org.test.orm.model.User;
 
 import java.util.List;
@@ -29,6 +30,11 @@ public class Main {
             user.setUsername(faker.name().username());
             user.setPassword(faker.name().title());
             user.setEmail(faker.name().firstName() + "@gmail.com");
+
+            Role role = new Role();
+            role.setTitle(faker.name().title());
+
+            user.setRole(role);
             session.save(user);
         }
         session.getTransaction().commit();
