@@ -42,7 +42,8 @@ public class Main {
 
     public static void printAllUser() {
         Session session = DatabaseConfiguration.getSessionFactory().openSession();
-        Query query = session.createQuery("select u from User u");
+        Query query = session.createQuery("select u from User u inner join fetch u.role r " +
+                "");
         List<User> list = query.list();
         for (User user : list) {
             System.out.println(user);
