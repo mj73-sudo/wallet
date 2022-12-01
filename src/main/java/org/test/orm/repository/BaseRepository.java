@@ -7,6 +7,7 @@ import org.test.orm.config.DatabaseConfiguration;
 import org.test.orm.model.BaseEntity;
 import org.test.orm.model.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 public abstract class BaseRepository<E extends BaseEntity> {
@@ -19,12 +20,14 @@ public abstract class BaseRepository<E extends BaseEntity> {
         this.type = cls;
     }
 
-    public void create(E e) {
+    public boolean create(E e) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(e);
+        Serializable createdId = session.save(e);
         session.getTransaction().commit();
         session.close();
+
+        return createdId instanceof Long;
     }
 
     public void update(E e,Long id) {
@@ -40,7 +43,7 @@ public abstract class BaseRepository<E extends BaseEntity> {
 
     public E findById(Long id) {
         Session session = sessionFactory.openSession();
-        E result = session.load(type, id);
+        E result = session.get(type, id);
         session.close();
         return result;
     }
