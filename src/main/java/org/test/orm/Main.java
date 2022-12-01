@@ -1,11 +1,9 @@
 package org.test.orm;
 
 import com.github.javafaker.Faker;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.test.orm.config.DatabaseConfiguration;
-import org.test.orm.model.Role;
 import org.test.orm.model.User;
+import org.test.orm.repository.UserRepository;
 
 import java.util.List;
 
@@ -22,50 +20,46 @@ public class Main {
 
     public static void createUser() {
         Faker faker = new Faker();
+        UserRepository userRepository = new UserRepository();
 
-        Session session = DatabaseConfiguration.getSessionFactory().openSession();
-        session.beginTransaction();
-        for (int i = 0; i < 20; i++) {
-            User user = new User();
-            user.setUsername(faker.name().username());
-            user.setPassword(faker.name().title());
-            user.setEmail(faker.name().firstName() + "@gmail.com");
+        User user = new User();
+        user.setUsername(faker.name().username());
+        user.setPassword(faker.name().title());
+        user.setEmail(faker.name().firstName() + "@gmail.com");
 
-            Role role = new Role();
-            role.setTitle(faker.name().title());
+        User user1 = new User();
+        user1.setUsername(faker.name().username());
+        user1.setPassword(faker.name().title());
+        user1.setEmail(faker.name().firstName() + "@gmail.com");
 
-            user.setRole(role);
-            session.save(user);
-        }
-        session.getTransaction().commit();
+        userRepository.create(user);
+        userRepository.create(user1);
+
     }
 
     public static void printAllUser() {
-        Session session = DatabaseConfiguration.getSessionFactory().openSession();
-        Query query = session.createQuery("select u from User u inner join fetch u.role r " +
-                "");
-        List<User> list = query.list();
+        UserRepository userRepository = new UserRepository();
+        List<User> list = userRepository.findAll();
         for (User user : list) {
             System.out.println(user);
         }
     }
 
     public static void deleteUser(Long id) {
-        Session session = DatabaseConfiguration.getSessionFactory().openSession();
-        session.beginTransaction();
-        User user = session.load(User.class, id);
-        session.delete(user);
-        session.getTransaction().commit();
+        UserRepository userRepository = new UserRepository();
+        userRepository.delete(id);
     }
 
 
     public static void updateUser(Long id) {
-        Session session = DatabaseConfiguration.getSessionFactory().openSession();
+        UserRepository userRepository = new UserRepository();
+
         Faker faker = new Faker();
-        session.beginTransaction();
-        User user = session.load(User.class, id);
+        User user = new User();
         user.setUsername(faker.name().username());
-        session.update(user);
-        session.getTransaction().commit();
+        user.setPassword(faker.name().title());
+        user.setEmail(faker.name().firstName() + "@gmail.com");
+
+        userRepository.update(user,2l);
     }
 }
