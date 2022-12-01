@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.test.orm.config.DatabaseConfiguration;
 import org.test.orm.model.BaseEntity;
+import org.test.orm.model.User;
 
 import java.util.List;
 
@@ -12,7 +13,6 @@ public abstract class BaseRepository<E extends BaseEntity> {
 
     SessionFactory sessionFactory = DatabaseConfiguration.getSessionFactory();
     String entityName;
-
     private Class<E> type;
     public BaseRepository(String entityName,Class<E> cls) {
         this.entityName = entityName;

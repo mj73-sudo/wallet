@@ -4,17 +4,28 @@ import com.github.javafaker.Faker;
 import org.test.orm.config.DatabaseConfiguration;
 import org.test.orm.model.User;
 import org.test.orm.repository.UserRepository;
+import org.test.orm.service.UserService;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        createUser();
+        UserService userService = new UserService();
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("adminpassword");
+        user.setEmail("admin@gmail.com");
+
+        userService.registerUser(user);
+
+        userService.loginUser("admin","adminpassword");
+
+       /* createUser();
         printAllUser();
         deleteUser(1l);
         printAllUser();
         updateUser(2l);
-        printAllUser();
+        printAllUser();*/
         DatabaseConfiguration.shutdown();
     }
 
