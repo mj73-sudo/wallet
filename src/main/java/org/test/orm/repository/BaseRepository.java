@@ -15,9 +15,10 @@ public abstract class BaseRepository<E extends BaseEntity> {
     SessionFactory sessionFactory = DatabaseConfiguration.getSessionFactory();
     String entityName;
     private Class<E> type;
-    public BaseRepository(String entityName,Class<E> cls) {
+
+    public BaseRepository(String entityName, Class<E> type) {
         this.entityName = entityName;
-        this.type = cls;
+        this.type = type;
     }
 
     public boolean create(E e) {
@@ -30,7 +31,7 @@ public abstract class BaseRepository<E extends BaseEntity> {
         return createdId instanceof Long;
     }
 
-    public void update(E e,Long id) {
+    public void update(E e, Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         E result = session.load(type, id);
@@ -49,7 +50,7 @@ public abstract class BaseRepository<E extends BaseEntity> {
     }
 
 
-    public List<E> findAll(){
+    public List<E> findAll() {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("select e from " + entityName + " e");
         List list = query.list();
@@ -57,10 +58,13 @@ public abstract class BaseRepository<E extends BaseEntity> {
         return list;
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        E result = session.load(type, id);
+
+        E result = session.get(type, id);
+        User user = session.get(User.class, 1);
+
         session.delete(result);
         session.getTransaction().commit();
         session.close();

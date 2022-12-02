@@ -14,5 +14,6 @@
 
         <mapping class="org.test.orm.model.User"></mapping>
         <mapping class="org.test.orm.model.Wallet"></mapping>
+        <mapping class="org.test.orm.model.Transaction"></mapping>
     </session-factory>
 </hibernate-configuration>
