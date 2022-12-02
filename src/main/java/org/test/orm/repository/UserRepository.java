@@ -23,4 +23,20 @@ public class UserRepository extends BaseRepository<User> {
 
         return list.get(0);
     }
+
+    public User getUserByWalletId(Long walletId) {
+//        String sqlQuery = "select u.* from wallets w inner join users u on w.user_id = u.id where w.id=:walletId";
+//        String hqlQuery = "select u from Wallet w join w.user u where w.id=:walletId";
+        Session session = sessionFactory.openSession();
+        Query<User> query =
+                session.createQuery("select u from Wallet w join w.user u where w.id=:walletId", User.class)
+                        .setParameter("walletId", walletId);
+
+        List<User> list = query.list();
+        session.close();
+        if (list.isEmpty())
+            return null;
+
+        return list.get(0);
+    }
 }

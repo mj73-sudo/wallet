@@ -13,5 +13,6 @@
         <property name="hbm2ddl.auto">create-drop</property>
 
         <mapping class="org.test.orm.model.User"></mapping>
+        <mapping class="org.test.orm.model.Wallet"></mapping>
     </session-factory>
 </hibernate-configuration>
